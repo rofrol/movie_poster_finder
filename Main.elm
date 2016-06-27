@@ -52,7 +52,14 @@ update msg model =
       } ! [getMoviePoster model.searchString]
 
     FetchSucceed movie ->
-      (Model model.searchString movie.title movie.posterUrl, Cmd.none)
+      let
+        posterUrl =
+          if movie.posterUrl == "N/A" then
+            "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f3/NA_cap_icon.svg/200px-NA_cap_icon.svg.png"
+          else
+            movie.posterUrl
+      in
+        (Model model.searchString movie.title posterUrl, Cmd.none)
 
     FetchFail error ->
       let
